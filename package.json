@@ -1,0 +1,27 @@
+{
+  "name": "hotel-express",
+  "version": "1.0.0",
+  "description": "Learning node-express and mongoDb",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^4.16.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/olufemi424/hotel-express.git"
+  },
+  "keywords": [
+    "node",
+    "mogodb",
+    "express"
+  ],
+  "author": "Olufemi Afolabi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/olufemi424/hotel-express/issues"
+  },
+  "homepage": "https://github.com/olufemi424/hotel-express#readme"
+}
