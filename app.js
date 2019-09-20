@@ -8,6 +8,7 @@ app.get('/', (req, res) => {
     .json({ message: 'Hello from the server !', app: 'Hotel Express' });
 });
 
+//Set up route to handle request and responses
 app.post('/', (req, res) => {
   res.send('You can post to this end point');
 });
