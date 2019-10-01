@@ -7,10 +7,8 @@ const userRouter = require('./routes/userRoutes');
 const app = express();
 
 // 1. MIDDLEWARES
-app.use(morgan('dev'));
-
-// built in middleware
-app.use(express.json());
+app.use(morgan('dev')); // logger middleware
+app.use(express.json()); // built json middleware
 
 app.use((req, res, next) => {
   console.log('Hello from the middle ware 🌼');
@@ -22,14 +20,9 @@ app.use((req, res, next) => {
   next();
 });
 
-// 2. ROUTE HANDLERS
-
-// 3.  ROUTES
+// ROUTES
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 
-// 4. Start Server
-const PORT = 3000;
-app.listen(PORT, () => {
-  console.log(`App running on http://localhost:${PORT}`);
-});
+//Start Server
+module.exports = app;
