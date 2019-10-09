@@ -11,7 +11,7 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev')); // logger middleware
 }
 
-app.use(express.json()); // built json middleware
+app.use(express.json()); // built-in json middleware
 app.use(express.static(`${__dirname}/public`));
 
 app.use((req, res, next) => {
