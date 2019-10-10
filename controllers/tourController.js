@@ -1,21 +1,40 @@
 const Tour = require('./../models/tourModel');
 
-exports.getAllTours = (req, res) => {
-  res.status(200).json({
-    status: 'succcess',
-    data: {
-      tours: 'return all tours'
-    }
-  });
+exports.getAllTours = async (req, res) => {
+  try {
+    const tours = await Tour.find({});
+
+    res.status(200).json({
+      status: 'succcess',
+      data: {
+        tours: tours
+      }
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: 'fail',
+      message: err
+    });
+  }
 };
 
-exports.getTour = (req, res) => {
-  res.status(200).json({
-    status: 'succcess',
-    data: {
-      tour: 'return tour'
-    }
-  });
+exports.getTour = async (req, res) => {
+  try {
+    const tour = await Tour.findById(req.params.id);
+    // findOne({_id: req.params.id})
+
+    res.status(200).json({
+      status: 'succcess',
+      data: {
+        tour
+      }
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: 'fail',
+      message: err
+    });
+  }
 };
 
 // eslint-disable-next-line node/no-unsupported-features/es-syntax
