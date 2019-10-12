@@ -65,7 +65,7 @@ exports.getTour = async (req, res) => {
 exports.createTour = async (req, res) => {
   try {
     // const newTour = new Tour({})
-    // newTour.save()
+    // newTour.save() low level way of mongoose
     const newTour = await Tour.create(req.body).then();
 
     res.status(201).json({
