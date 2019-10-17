@@ -97,7 +97,7 @@ tourSchema.pre('save', function(next) {
 //all the listeners that start with 'find'
 // tourSchema.pre('find', function(next) {
 tourSchema.pre(/^find/, function(next) {
-  this.find({ secreteTour: { $ne: true } });
+  this.find({ secretTour: { $ne: true } });
 
   this.start = Date.now();
   next();
@@ -106,6 +106,12 @@ tourSchema.pre(/^find/, function(next) {
 tourSchema.post(/^find/, function(docs, next) {
   console.log(`Query took ${Date.now() - this.start} milliseconds`);
   this.find({ secreteTour: { $ne: true } });
+  next();
+});
+
+//AGGREGATION MIDDLEWARE
+tourSchema.pre('aggregate', function(next) {
+  this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
   next();
 });
 
