@@ -70,11 +70,11 @@ tourSchema.virtual('durationWeeks').get(function() {
   return this.duration / 7;
 });
 
-// tourSchema.virtual('level').get(function() {
-//   if (this.difficulty === 'easy') return 'easy';
-//   if (this.difficulty === 'medium') return 'medium';
-//   if (this.difficulty === 'hard') return 'hard';
-// });
+tourSchema.virtual('level').get(function() {
+  if (this.difficulty === 'easy') return 'easy';
+  if (this.difficulty === 'medium') return 'medium';
+  if (this.difficulty === 'hard') return 'hard';
+});
 
 //Document middleware: runs before the save() command and create()
 tourSchema.pre('save', function(next) {
