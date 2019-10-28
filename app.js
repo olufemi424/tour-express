@@ -42,7 +42,7 @@ app.all('*', (req, res, next) => {
 });
 
 //error handling
-app.use(globalErrorHandler);
+// app.use(globalErrorHandler);
 
 //Start Server
 module.exports = app;
