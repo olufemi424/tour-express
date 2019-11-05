@@ -1,3 +1,5 @@
+/*eslint no-param-reassign: ["error", { "props": true, "ignorePropertyModificationsFor": ["err"] }]*/
+
 module.exports = (err, req, res, next) => {
   //   console.log(err.stack);
   err.statusCode = err.statusCode || 500;
