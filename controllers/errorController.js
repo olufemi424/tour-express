@@ -1,4 +1,26 @@
-/*eslint no-param-reassign: ["error", { "props": true, "ignorePropertyModificationsFor": ["err"] }]*/
+/*eslint no-param-reassign: ["error", { "props": true, "ignorePropertyModificationsFor": ["err","error"] }]*/
+
+const AppError = require('../utils/appError');
+
+const handleCastErrorDB = err => {
+  const message = `Invalid ${err.path}: ${err.value}`;
+  return new AppError(message, 404);
+};
+
+const handleDubplicateDB = err => {
+  let value = err.errmsg.match(/(["'])(\\?.)*?\1/)[0];
+  value = value.replace(/\\/g, ' ');
+
+  const message = `Duplicate field value: ${value}. Please use another name`;
+  return new AppError(message, 400);
+};
+
+const handleValidationErrorDB = err => {
+  const errors = Object.values(err.errors).map(el => el.message);
+
+  const message = `Invalid input data. ${errors.join('. ')}`;
+  return new AppError(message, 400);
+};
 
 const sendErrorForDev = (err, res) => {
   res.status(err.statusCode).json({
@@ -11,7 +33,8 @@ const sendErrorForDev = (err, res) => {
 
 const sendErrorForProd = (err, res) => {
   // Operational, trusted error: Send message to client
-  if (err.isOpreational) {
+  console.log(err.isOperational);
+  if (err.isOperational) {
     res.status(err.statusCode).json({
       status: err.status,
       message: err.message
@@ -37,6 +60,12 @@ module.exports = (err, req, res, next) => {
   if (process.env.NODE_ENV === 'development') {
     sendErrorForDev(err, res);
   } else if (process.env.NODE_ENV === 'production') {
-    sendErrorForProd(err, res);
+    let error = { ...err };
+    if (error.name === 'CastError') error = handleCastErrorDB(error);
+    if (error.code === 11000) error = handleDubplicateDB(error);
+    if (error.name === 'ValidationError') {
+      error = handleValidationErrorDB(error);
+    }
+    sendErrorForProd(error, res);
   }
 };
