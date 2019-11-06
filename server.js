@@ -5,8 +5,6 @@ dotenv.config({ path: './config.env' });
 
 const app = require('./app');
 
-const PORT = process.env.PORT || 8000;
-
 mongoose
   .connect(
     `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0-yzj5q.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`,
@@ -17,6 +15,15 @@ mongoose
   })
   .catch(err => console.log(err));
 
-app.listen(PORT, () => {
+const PORT = process.env.PORT || 8000;
+const server = app.listen(PORT, () => {
   console.log(`App running on http://localhost:${PORT}`);
+});
+
+process.on('unhandledRejection', err => {
+  console.log(err.name, err.message);
+  console.log('UNHANDLE REJECTION! Shutting down...');
+  server.close(() => {
+    process.exit(1);
+  });
 });
