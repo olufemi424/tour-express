@@ -16,7 +16,8 @@ exports.signup = catchAsync(async (req, res, next) => {
     email: req.body.email,
     password: req.body.password,
     passwordConfirm: req.body.passwordConfirm,
-    passwordChangedAt: req.body.passwordChangedAt
+    passwordChangedAt: req.body.passwordChangedAt,
+    role: req.body.role
   });
 
   const token = singTonken(newUser._id);
@@ -37,7 +38,6 @@ exports.login = catchAsync(async (req, res, next) => {
   if (!email || !password) {
     return next(new AppError('Please provide email and password!', 400));
   }
-
   //2) check if the user exist  and password is correct
   const user = await User.findOne({ email: email }).select('+password');
   //call User Model Instance method to reaturn a boolean
@@ -97,4 +97,16 @@ exports.protect = catchAsync(async (req, res, next) => {
   next();
 });
 
-// exports.restrictTo =
+//wrapper function
+exports.restrictTo = (...roles) => {
+  return (req, res, next) => {
+    //roles ["admin", "lead-guide"]. role ='user'
+    console.log(req.user.role);
+    if (!roles.includes(req.user.role)) {
+      return next(
+        new AppError('You do not have permission to perfome this action', 403)
+      );
+    }
+    next();
+  };
+};

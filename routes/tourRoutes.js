@@ -21,7 +21,8 @@ router
   .get(tourController.getTour)
   .patch(tourController.updateTour)
   .delete(
-    authController.protect, // middlewares
+    // middlewares: run on user  document that is returned
+    authController.protect,
     authController.restrictTo('admin', 'lead-guide'),
     tourController.deleteTour
   );
