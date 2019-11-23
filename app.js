@@ -1,6 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
+const helmet = require('helmet');
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
@@ -10,10 +11,14 @@ const userRouter = require('./routes/userRoutes');
 const app = express();
 
 // 1.GLOBAL MIDDLEWARES
+app.use(helmet()); //Helmet helps you secure your Express apps by setting various HTTP headers. It's not a silver bullet, but it can help!
+
+//development loggin
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev')); // logger middleware
 }
 
+//limit requet from same apu
 const limiter = rateLimit({
   max: 100,
   windowMs: 60 * 60 * 1000,
@@ -21,9 +26,18 @@ const limiter = rateLimit({
 });
 app.use('/api', limiter); //limit all request on API
 
-app.use(express.json()); // built-in json middleware
+//Body parser, reading data from the body into req.body
+// built-in json middleware
+app.use(
+  express.json({
+    limit: '10kb'
+  })
+);
+
+//serving static files
 app.use(express.static(`${__dirname}/public`));
 
+//Test middleware
 app.use((req, res, next) => {
   next();
 });
