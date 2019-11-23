@@ -12,6 +12,7 @@ const singTonken = id => {
   });
 };
 
+// create send token to user, and the user will use this token to perform actions, this token contains user details
 const createSendToken = (user, statusCode, res) => {
   const token = singTonken(user._id);
 
@@ -102,7 +103,6 @@ exports.protect = catchAsync(async (req, res, next) => {
 exports.restrictTo = (...roles) => {
   return (req, res, next) => {
     //roles ["admin", "lead-guide"]. role ='user'
-    console.log(req.user.role);
     if (!roles.includes(req.user.role)) {
       return next(
         new AppError('You do not have permission to perfome this action', 403)
@@ -154,6 +154,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   }
 });
 
+//this function will only be successful if the it is called less than 10mins after forgot password is called
 exports.resetPassword = catchAsync(async (req, res, next) => {
   //1) Get user based on the token
   const hashedToken = crypto
@@ -163,7 +164,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 
   const user = await User.findOne({
     passwordResetToken: hashedToken,
-    passwordResetExpires: { $gt: Date.now() }
+    passwordResetExpires: { $gt: Date.now() } //user is back before 10mins
   });
 
   //2) if token has not expired, and there is a user, set the new password
