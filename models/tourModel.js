@@ -121,6 +121,13 @@ tourSchema.virtual('durationWeeks').get(function() {
   return this.duration / 7;
 });
 
+//this looks for the tour field in the Review document that matches the current document ID
+tourSchema.virtual('reviews', {
+  ref: 'Review',
+  foreignField: 'tour',
+  localField: '_id'
+});
+
 // tourSchema.virtual('level').get(function() {
 //   if (this.difficulty === 'easy') return 'easy';
 //   if (this.difficulty === 'medium') return 'medium';
