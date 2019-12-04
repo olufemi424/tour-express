@@ -31,7 +31,7 @@ exports.createReview = catchAsync(async (req, res, next) => {
 });
 
 exports.deleteReview = catchAsync(async (req, res, next) => {
-  const review = await Review.findByIdAndDelete(req.params.id);
+  const review = await Review.deleteOne(req.params.id);
 
   if (!review) {
     return next(new AppError('No Review found with that ID', 404));

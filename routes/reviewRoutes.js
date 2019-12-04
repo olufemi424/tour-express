@@ -2,7 +2,10 @@ const express = require('express');
 const reviewController = require('../controllers/reviewController');
 const authController = require('../controllers/authController');
 
-const router = express.Router();
+//mergePrams will take in incoming routes
+const router = express.Router({ mergeParams: true });
+
+//POST /tour/243nm2/reviews
 
 router
   .route('/')
