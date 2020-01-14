@@ -5,6 +5,7 @@ const reviewRouter = require('./../routes/reviewRoutes');
 
 const router = express.Router();
 
+// route redirect  if this url matches OTHERWISE it uses the right  controller
 router.use('/:tourId/reviews', reviewRouter);
 
 router
