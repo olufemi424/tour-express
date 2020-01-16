@@ -25,6 +25,7 @@ const server = app.listen(PORT, () => {
   console.log(`App running on http://localhost:${PORT}`);
 });
 
+//unhandle routes error
 process.on('unhandledRejection', err => {
   console.log(err.name, err.message);
   console.log('UNHANDLE REJECTION! Shutting down...');
