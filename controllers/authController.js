@@ -64,6 +64,7 @@ exports.login = catchAsync(async (req, res, next) => {
   const user = await User.findOne({ email: email }).select('+password');
   //call User Model Instance method to reaturn a boolean
   // compare password that was provided by the user, with the password retrieved from the database with the users associated email
+
   const isCorrect = user
     ? await user.correctPassword(password, user.password)
     : false;

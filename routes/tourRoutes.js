@@ -22,7 +22,7 @@ router
 
 router
   .route('/:id')
-  .get(tourController.getTour)
+  .get(authController.protect, tourController.getTour)
   .patch(tourController.updateTour)
   .delete(
     // middlewares: run on user  document that is returned
