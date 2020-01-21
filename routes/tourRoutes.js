@@ -31,21 +31,4 @@ router
     tourController.deleteTour
   );
 
-//access reviews resource on a tour resource
-//POST /tour/243nm2/reviews
-//GET /tour/2434n32/reviews/287234734h
-
-// router
-//   .route('/:tourId/reviews')
-//   .post(
-//     authController.protect,
-//     authController.restrictTo('user'),
-//     reviewController.createReview
-//   )
-//   .delete(
-//     authController.protect,
-//     authController.restrictTo('user', 'admin'),
-//     reviewController.deleteReview
-//   );
-
 module.exports = router;
