@@ -35,8 +35,3 @@ exports.createReview = catchAsync(async (req, res, next) => {
 });
 
 exports.deleteReview = factory.deleteOne(Review);
-
-//review controller
-//review controller
-//review controller
-//review controller
