@@ -7,7 +7,7 @@ const router = express.Router({ mergeParams: true });
 
 //POST /tour/243nm2/reviews
 //GET /tour/243nm2/reviews //get all reviews for a particular post
-
+//POST /reviews
 router
   .route('/')
   .get(reviewController.getAllReviews)

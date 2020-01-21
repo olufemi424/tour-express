@@ -4,6 +4,7 @@ const factory = require('./handlerFactory');
 
 exports.getAllReviews = catchAsync(async (req, res) => {
   let filter = {};
+  // find reviews for a particular tour
   if (req.params.tourId) filter = { tour: req.params.tourId };
 
   //execute query
