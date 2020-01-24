@@ -77,7 +77,7 @@ exports.getAll = Model => {
       .paginate();
 
     // const doc = await features.query.explain(); //see db analysis
-    const doc = await features.query.explain();
+    const doc = await features.query;
 
     //send response
     res.status(200).json({
