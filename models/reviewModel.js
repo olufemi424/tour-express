@@ -90,7 +90,7 @@ reviewSchema.pre(/^findOneAnd/, async function(next) {
   next();
 });
 
-// calculate average rating after the document has been found and call the constructor on the doc
+// calculate average rating after the document has been found and call the constructor on the document
 reviewSchema.post(/^findOneAnd/, async function() {
   await this.r.constructor.calcAverageRatings(this.r.tour);
 });
