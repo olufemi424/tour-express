@@ -34,10 +34,13 @@ const reviewSchema = new mongoose.Schema(
   }
 );
 
+//Tour and user always have to be unique, ERROR out when a user want to create multiple reviews
+reviewSchema.index({ tour: 1, user: 1 }, { unique: true });
+
 reviewSchema.pre(/^find/, function(next) {
   // this.populate({
   //   path: 'tour',
-  //   select: 'name' //exclused these fields
+  //   select: 'name' //incluse these fields
   // }).populate({
   //   path: 'user',
   //   select: 'name photo'
@@ -67,8 +70,8 @@ reviewSchema.statics.calcAverageRatings = async function(tourId) {
 
   if (stats.length > 0) {
     await Tour.findByIdAndUpdate(tourId, {
-      ratingsAverage: stats[0].nRating,
-      ratingQuantity: stats[0].averageRating
+      ratingsAverage: stats[0].averageRating,
+      ratingQuantity: stats[0].nRating
     });
   } else {
     await Tour.findByIdAndUpdate(tourId, {
@@ -92,7 +95,11 @@ reviewSchema.pre(/^findOneAnd/, async function(next) {
 
 // calculate average rating after the document has been found and call the constructor on the document
 reviewSchema.post(/^findOneAnd/, async function() {
-  await this.r.constructor.calcAverageRatings(this.r.tour);
+  if (this.r) {
+    await this.r.constructor.calcAverageRatings(this.r.tour);
+  } else {
+    return false;
+  }
 });
 
 const Review = mongoose.model('Review', reviewSchema);
