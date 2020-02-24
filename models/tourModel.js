@@ -89,7 +89,10 @@ const tourSchema = new mongoose.Schema(
         default: 'Point',
         enum: ['Point']
       },
-      coordinates: [Number],
+      coordinates: {
+        type: [Number],
+        default: [0, 0]
+      },
       address: String,
       description: String
     },
@@ -191,11 +194,11 @@ tourSchema.post(/^find/, function(docs, next) {
   next();
 });
 
-//AGGREGATION MIDDLEWARE
-tourSchema.pre('aggregate', function(next) {
-  this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
-  next();
-});
+// //AGGREGATION MIDDLEWARE
+// tourSchema.pre('aggregate', function(next) {
+//   this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
+//   next();
+// });
 
 const Tour = mongoose.model('Tour', tourSchema);
 
