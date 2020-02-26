@@ -1,5 +1,5 @@
 const dotenv = require('dotenv');
-const mongoose = require('mongoose');
+const connectDb = require('./config/db');
 
 process.on('uncaughtException', err => {
   console.log(err.name, err.message);
@@ -7,18 +7,12 @@ process.on('uncaughtException', err => {
   process.exit(1);
 });
 
-dotenv.config({ path: './config.env' });
+dotenv.config({ path: './config/config.env' });
+
 const app = require('./app');
 
-mongoose
-  .connect(
-    `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0-yzj5q.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`,
-    { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true }
-  )
-  .then(() => {
-    console.log(`DB connected successful`);
-  })
-  .catch(err => console.log(err));
+//connect database
+connectDb();
 
 const PORT = process.env.PORT || 8000;
 const server = app.listen(PORT, () => {
