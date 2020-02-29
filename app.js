@@ -1,5 +1,5 @@
-const express = require('express');
 const path = require('path');
+const express = require('express');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
@@ -16,8 +16,14 @@ const reviewRouter = require('./routes/reviewRoutes');
 
 const app = express();
 
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
+
 // 1.GLOBAL MIDDLEWARES
-app.use(helmet()); //Helmet helps secure Express apps by setting various HTTP headers. It's not a silver bullet, but it can help!
+//serving static files
+app.use(express.static(path.join(__dirname, 'public')));
+//Helmet helps secure Express apps by setting various HTTP headers. It's not a silver bullet, but it can help!
+app.use(helmet());
 
 // development loggin
 if (process.env.NODE_ENV === 'development') {
@@ -60,9 +66,6 @@ app.use(
   })
 );
 
-//serving static files
-app.use(express.static(path.join(__dirname, 'public')));
-
 //Test middleware
 app.use((req, res, next) => {
   next();
@@ -72,6 +75,10 @@ app.use((req, res, next) => {
 app.use((req, res, next) => {
   req.reqestTime = new Date().toISOString();
   next();
+});
+
+app.get('/', (req, res, next) => {
+  res.status(200).render('base');
 });
 
 // ROUTES
