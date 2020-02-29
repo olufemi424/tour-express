@@ -1,4 +1,5 @@
 extends base
+include _reviewCard
 
 block append head
   script(src='https://api.mapbox.com/mapbox-gl-js/v0.54.0/mapbox-gl.js')
@@ -57,9 +58,9 @@ block content
 
       .description-box
          h2.heading-secondary.ma-bt-lg= `About ${tour.name} tour`
-         //- - const parapraphs = tour.description.split('\n');
-         //- each p in parapraphs
-         //-    p.description__text= p
+         - const parapraphs = tour.description.split('\n');
+         each p in parapraphs
+            p.description__text= p
 
    section.section-pictures
       each img, i in tour.images
@@ -71,8 +72,8 @@ block content
 
    section.section-reviews
       .reviews
-         //- each review in tour.reviews
-         //-    +reviewCard(review)
+         each review in tour.reviews
+            +reviewCard(review)
 
    section.section-cta
       .cta
