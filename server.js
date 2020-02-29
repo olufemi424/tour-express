@@ -11,7 +11,7 @@ dotenv.config({ path: './config/config.env' });
 
 const app = require('./app');
 
-//connect database
+//connect database func
 connectDb();
 
 const PORT = process.env.PORT || 8000;
