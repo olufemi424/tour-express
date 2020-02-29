@@ -77,8 +77,17 @@ app.use((req, res, next) => {
   next();
 });
 
+//view routes
 app.get('/', (req, res, next) => {
   res.status(200).render('base');
+});
+
+app.get('/overview', (req, res, next) => {
+  res.status(200).render('overview', { title: 'All tour' });
+});
+
+app.get('/tour', (req, res, next) => {
+  res.status(200).render('tour', { title: 'Single tour' });
 });
 
 // ROUTES
