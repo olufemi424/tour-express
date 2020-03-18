@@ -6,7 +6,7 @@ import { login } from './login';
 //DOM ELEMENTS
 const mapbox = document.getElementById('map');
 const loginForm = document.querySelector('.form');
-const logOutEl = document.querySelector('.nav__el--logou');
+const logOutEl = document.querySelector('.nav__el--logout');
 
 if (mapbox) {
   const locations = JSON.parse(mapbox.dataset.locations);
