@@ -21,5 +21,3 @@ if (loginForm) {
     login(email, password);
   });
 }
-
-///Map box interesting
