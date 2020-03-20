@@ -54,6 +54,16 @@ exports.signup = catchAsync(async (req, res, next) => {
   createSendToken(newUser, 201, res);
 });
 
+// logout user by sending a dummy token that expirsed in 10seconds
+exports.logout = (req, res) => {
+  res.cookie('jwt', 'loggedout', {
+    expires: new Date(Date.now() + 10 * 1000),
+    httpOnly: true
+  });
+
+  res.status(200).json({ status: 'success' });
+};
+
 exports.login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
 
@@ -119,7 +129,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 });
 
 // Only for rendering pages, no errors
-exports.isLoggedIn = catchAsync(async (req, res, next) => {
+exports.isLoggedIn = async (req, res, next) => {
   if (req.cookies.jwt) {
     try {
       // 1) Verification token
@@ -147,7 +157,7 @@ exports.isLoggedIn = catchAsync(async (req, res, next) => {
     }
   }
   next(); // in case no cookie call the next middleware
-});
+};
 
 //wrapper function
 exports.restrictTo = (...roles) => {
