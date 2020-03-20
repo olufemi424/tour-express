@@ -31,45 +31,72 @@ const handleJWTExpiredError = () => {
 };
 
 // send error when in  development
-const sendErrorForDev = (err, res) => {
-  res.status(err.statusCode).json({
-    status: err.status,
-    error: err,
-    message: err.message,
-    stack: err.stack
+const sendErrorForDev = (err, req, res) => {
+  //Api error
+  if (req.originalUrl.startsWith('/api')) {
+    return res.status(err.statusCode).json({
+      status: err.status,
+      error: err,
+      message: err.message,
+      stack: err.stack
+    });
+  }
+  //error for render website
+  return res.status(err.statusCode).render('error', {
+    title: 'Something went wrongs',
+    msg: err.message
   });
 };
 
 // send error when in  production
-const sendErrorForProd = (err, res) => {
-  // Operational, trusted error: Send message to client
-  if (err.isOperational) {
-    res.status(err.statusCode).json({
-      status: err.status,
-      message: err.message
-    });
-    // Programing or other unknown error: don't leak error detils
-  } else {
-    // 1.) Log Error
-    console.error('ERROR :', err);
-
-    // 2.) send generic message
-    res.status(500).json({
+const sendErrorForProd = (err, req, res) => {
+  // A) API
+  if (req.originalUrl.startsWith('/api')) {
+    // A) Operational, trusted error: send message to client
+    if (err.isOperational) {
+      return res.status(err.statusCode).json({
+        status: err.status,
+        message: err.message
+      });
+    }
+    // B) Programming or other unknown error: don't leak error details
+    // 1) Log error
+    console.error('ERROR 💥', err);
+    // 2) Send generic message
+    return res.status(500).json({
       status: 'error',
-      message: 'Something went very wrong'
+      message: 'Something went very wrong!'
     });
   }
+
+  // B) RENDERED WEBSITE
+  // A) Operational, trusted error: send message to client
+  if (err.isOperational) {
+    return res.status(err.statusCode).render('error', {
+      title: 'Something went wrong!',
+      msg: err.message
+    });
+  }
+  // B) Programming or other unknown error: don't leak error details
+  // 1) Log error
+  console.error('ERROR 💥', err);
+  // 2) Send generic message
+  return res.status(err.statusCode).render('error', {
+    title: 'Something went wrong!',
+    msg: 'Please try again later.'
+  });
 };
 
 module.exports = (err, req, res, next) => {
-  //   console.log(err.stack);
+  // console.log(err.stack);
   err.statusCode = err.statusCode || 500;
   err.status = err.status || 'error';
 
   if (process.env.NODE_ENV === 'development') {
-    sendErrorForDev(err, res);
+    sendErrorForDev(err, req, res);
   } else if (process.env.NODE_ENV === 'production') {
     let error = { ...err };
+    error.message = err.message;
 
     if (error.name === 'CastError') {
       error = handleCastErrorDB(error);
@@ -91,6 +118,6 @@ module.exports = (err, req, res, next) => {
       error = handleJWTExpiredError(error);
     }
 
-    sendErrorForProd(error, res);
+    sendErrorForProd(error, req, res);
   }
 };
