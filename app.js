@@ -47,12 +47,16 @@ app.use(
     limit: '10kb'
   })
 );
+
+// Parse Cookie header and populate req.cookies with an object keyed by the cookie names.
+// Optionally you may enable signed cookie support by passing a secret string,
+// which assigns req.secret so it may be used by other middleware.
 app.use(cookieParser());
 
-//Data sanitization against NoSQL query injection //	"email":{"$gt":""},
+// Data sanitization against NoSQL query injection //	"email":{"$gt":""},
 app.use(mongoSanitize());
 
-//Data sanitization against XSS
+// Data sanitization against XSS
 app.use(xss());
 
 // middleware to protect against HTTP Parameter Pollution attacks
