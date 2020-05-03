@@ -145,7 +145,7 @@ exports.isLoggedIn = async (req, res, next) => {
         return next();
       }
 
-      // 3) Check if user changed password after the token was issues
+      // 3) Check if user changed password after the token was issued
       if (currentUser.changedPasswordAfter(decoded.iat)) {
         return next();
       }
@@ -258,6 +258,6 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   await user.save();
   //user.findOneAndUpdate will not work here
 
-  //4.) log user in, send JWT
+  //4.) log user in, and send JWT
   createSendToken(user, 201, res);
 });
