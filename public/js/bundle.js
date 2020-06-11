@@ -8782,7 +8782,7 @@ var _login = require("./login");
 
 //DOM ELEMENTS
 var mapbox = document.getElementById('map');
-var loginForm = document.querySelector('.form');
+var loginForm = document.querySelector('.form--login');
 var logOutBtn = document.querySelector('.nav__el--logout');
 
 if (mapbox) {
@@ -8828,7 +8828,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54308" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50009" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -320,6 +320,8 @@ body {
     -webkit-box-direction: normal;
     -ms-flex-direction: column;
     flex-direction: column;
+    height: 18rem;
+    padding: 2.5rem;
   }
 }
 .header__logo img {

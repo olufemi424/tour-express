@@ -47,6 +47,8 @@ app.use(
     limit: '10kb'
   })
 );
+// parse url encoded, such as default form submissions.
+app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 
 // Parse Cookie header and populate req.cookies with an object keyed by the cookie names.
 // Optionally you may enable signed cookie support by passing a secret string,
