@@ -248,13 +248,15 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   //1.) Get user from collection
   const user = await User.findById(req.user.id).select('+password');
   //2.) check if the posted currrent password is correct
-
-  if (!user.correctPassword(req.body.passowrdCurrent, user.password)) {
+  console.log(req.body.passwordCurrent, user.password);
+  if (!user.correctPassword(req.body.passwordCurrent, user.password)) {
     return next(new AppError('Your current password is wrong!', 401));
   }
+
   //3.) if so, update password
   user.password = req.body.password;
   user.passwordConfirm = req.body.passwordConfirm;
+
   await user.save();
   //user.findOneAndUpdate will not work here
 

@@ -22,6 +22,7 @@ const server = app.listen(PORT, () => {
 
 //unhandle routes error
 process.on('unhandledRejection', err => {
+  console.log(err);
   console.log(err.name, err.message);
   console.log('UNHANDLE REJECTION! Shutting down...');
   server.close(() => {

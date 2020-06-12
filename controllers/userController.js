@@ -25,6 +25,7 @@ exports.deleteUser = factory.deleteOne(User);
 
 exports.updateMe = catchAsync(async (req, res, next) => {
   //1)  Create error if user POSTs passowrd data
+
   if (req.body.password) {
     return next(
       new AppError(
@@ -35,13 +36,15 @@ exports.updateMe = catchAsync(async (req, res, next) => {
   }
   //2) Update user document
   const filteredBody = filterObj(req.body, 'name', 'email');
+
   const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {
     new: true,
     runValidators: true
   });
+
   //send response
   res.status(200).json({
-    status: 'succcess',
+    status: 'success',
     data: {
       user: updatedUser
     }
