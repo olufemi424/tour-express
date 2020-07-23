@@ -83,7 +83,6 @@ app.use((req, res, next) => {
 // add request time to the req
 app.use((req, res, next) => {
   req.reqestTime = new Date().toISOString();
-  // console.log(req.cookies);
   next();
 });
 
