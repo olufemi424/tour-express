@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const sligify = require('slugify');
+const slugify = require('slugify');
 // const User = require('./userModel');
 // const validator = require('validator');
 
@@ -146,7 +146,7 @@ tourSchema.virtual('reviews', {
 
 //Document middleware: runs before the save() command and create()
 tourSchema.pre('save', function(next) {
-  this.slug = sligify(this.name, { lower: true });
+  this.slug = slugify(this.name, { lower: true });
   next();
 });
 
